@@ -4,16 +4,25 @@ import Link from "next/link";
 import { BookOpen } from "lucide-react";
 
 export default async function YazarlarPage() {
-    const authors: any[] = [
-        {
-            id: "test-admin-1", name: "Sistem Yöneticisi", role: "ADMIN", bio: "Haber portalı baş editörü.", avatarUrl: null,
-            news: [{ id: "n1", title: "Örnek Makale 1", publishedAt: new Date().toISOString() }]
+    const authors = await prisma.user.findMany({
+        where: {
+            news: { some: { status: "PUBLISHED" } },
         },
-        {
-            id: "test-author-1", name: "Fatma Yılmaz", role: "AUTHOR", bio: "Yerel haberler muhabiri.", avatarUrl: null,
-            news: [{ id: "n2", title: "Örnek Makale 2", publishedAt: new Date().toISOString() }]
-        }
-    ];
+        select: {
+            id: true,
+            name: true,
+            role: true,
+            bio: true,
+            avatarUrl: true,
+            news: {
+                where: { status: "PUBLISHED" },
+                select: { id: true, title: true, publishedAt: true },
+                orderBy: { publishedAt: "desc" },
+                take: 5,
+            },
+        },
+        orderBy: { createdAt: "asc" },
+    });
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-10">

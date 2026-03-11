@@ -10,37 +10,39 @@ interface Props {
 
 export async function generateMetadata({ params }: Props) {
     const { slug } = await params;
-    return { title: "Örnek Haber - Çanakkale Haber" };
+    const news = await prisma.news.findUnique({
+        where: { slug },
+        select: { title: true, excerpt: true },
+    });
+    return { title: news?.title || "Haber bulunamadı" };
 }
 
 export default async function NewsDetailPage({ params }: Props) {
     const { slug } = await params;
+    const news = await prisma.news.findUnique({
+        where: { slug },
+        include: {
+            author: true,
+            category: true,
+        },
+    });
 
-    // Hardcoded Mock for Vercel Demo
-    const news: any = {
-        id: "mock-detail-1",
-        title: "Çanakkale'de Tarihi Keşif",
-        slug: slug,
-        excerpt: "Bölgede yapılan son kazılarda önemli eserlere ulaşıldı.",
-        content: "<p>Çanakkale'de devam eden kazı çalışmalarında tarihe ışık tutacak yeni buluntular ortaya çıkarıldı. Uzmanlar bölgenin önemine dikkat çekiyor.</p>",
-        status: "PUBLISHED",
-        publishedAt: new Date().toISOString(),
-        viewCount: 1500,
-        author: { name: "Fatma Yılmaz" },
-        category: { slug: "kultur-sanat", name: "Kültür & Sanat", color: "#8B5CF6" }
-    };
+    if (!news || news.status !== "PUBLISHED") notFound();
 
-    const related: any[] = [
-        {
-            id: "related-1",
-            title: "Troya Müzesi Ziyaretçi Rekoru Kırdı",
-            slug: "troya-muzesi-rekor",
-            coverImage: null,
-            publishedAt: new Date(Date.now() - 86400000).toISOString(),
-            author: { name: "Mehmet Demir", avatarUrl: null },
-            category: { name: "Kültür & Sanat", color: "#8B5CF6" }
-        }
-    ];
+    // Related news
+    const related = await prisma.news.findMany({
+        where: {
+            categoryId: news.categoryId,
+            status: "PUBLISHED",
+            NOT: { id: news.id },
+        },
+        include: {
+            author: { select: { id: true, name: true, avatarUrl: true } },
+            category: true,
+        },
+        take: 4,
+        orderBy: { publishedAt: "desc" },
+    });
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-10">

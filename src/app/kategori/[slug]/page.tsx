@@ -9,20 +9,21 @@ interface Props {
 export default async function CategoryPage({ params }: Props) {
     const { slug } = await params;
 
-    const category: any = { id: "cat-mock", name: "Özel Haberler", slug, color: "#EF4444" };
+    const category = await prisma.category.findUnique({
+        where: { slug },
+    });
 
-    const news: any[] = [
-        {
-            id: "cat-news-1",
-            title: "Genel Kategori Haberi",
-            slug: "genel-kategori-haberi",
-            excerpt: "Bu kategoriye ait örnek bir haber metni.",
-            coverImage: null,
-            publishedAt: new Date().toISOString(),
-            author: { id: "author-1", name: "Admin", avatarUrl: null },
-            category: category
-        }
-    ];
+    if (!category) notFound();
+
+    const news = await prisma.news.findMany({
+        where: { categoryId: category.id, status: "PUBLISHED" },
+        include: {
+            author: { select: { id: true, name: true, avatarUrl: true } },
+            category: true,
+        },
+        orderBy: { publishedAt: "desc" },
+        take: 20,
+    });
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-10">
@@ -51,7 +52,7 @@ export default async function CategoryPage({ params }: Props) {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {news.map((item: any) => (
+                    {news.map((item) => (
                         <NewsCard
                             key={item.id}
                             id={item.id}

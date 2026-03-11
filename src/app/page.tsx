@@ -13,49 +13,39 @@ import { Clock, ArrowRight } from "lucide-react";
 export const revalidate = 60;
 
 async function getPublishedNews() {
-  return [
-    {
-      id: "mock-news-1",
-      title: "Çanakkale Boğazı'nda Gemi Trafiği",
-      excerpt: "Çanakkale Boğazı'nda yoğun sis nedeniyle gemi trafiği geçici olarak durduruldu.",
-      slug: "canakkale-bogazinda-gemi-trafigi",
-      coverImage: "https://upload.wikimedia.org/wikipedia/commons/4/44/1915_%C3%87anakkale_K%C3%B6pr%C3%BCs%C3%BC1.jpg",
-      publishedAt: new Date().toISOString(),
-      author: { id: "test-author-1", name: "Fatma Yılmaz", avatarUrl: null },
-      category: { id: "cat-1", name: "Gündem", color: "#EF4444" }
+  return prisma.news.findMany({
+    where: { status: "PUBLISHED" },
+    include: {
+      author: { select: { id: true, name: true, avatarUrl: true } },
+      category: true,
     },
-    {
-      id: "mock-news-2",
-      title: "Troya Müzesi'ne Ziyaretçi Akını",
-      excerpt: "Avrupa Yılın Müzesi Özel Ödülü alan Troya Müzesi, yerli ve yabancı turistlerin gözdesi oldu.",
-      slug: "troya-muzesine-ziyaretci-akini",
-      coverImage: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Troy_Museum%2C_Tevfikiye%2C_%C3%87anakkale%2C_Turkey.jpg",
-      publishedAt: new Date(Date.now() - 86400000).toISOString(),
-      author: { id: "test-author-2", name: "Mehmet Demir", avatarUrl: null },
-      category: { id: "cat-2", name: "Kültür & Sanat", color: "#8B5CF6" }
-    }
-  ];
+    orderBy: { publishedAt: "desc" },
+    take: 22,
+  });
 }
 
 async function getAuthors() {
-  return [
-    {
-      id: "test-author-1", name: "Fatma Yılmaz", role: "AUTHOR", bio: "Çanakkale merkezli yerel muhabir.", avatarUrl: null,
-      news: [{ id: "mock-news-1", title: "Çanakkale Boğazı'nda Gemi Trafiği", publishedAt: new Date().toISOString() }]
+  return prisma.user.findMany({
+    where: { news: { some: { status: "PUBLISHED" } } },
+    select: {
+      id: true, name: true, role: true, bio: true, avatarUrl: true,
+      news: {
+        where: { status: "PUBLISHED" },
+        select: { id: true, title: true, publishedAt: true },
+        orderBy: { publishedAt: "desc" },
+        take: 2,
+      },
     },
-    {
-      id: "test-author-2", name: "Mehmet Demir", role: "AUTHOR", bio: "Kültür ve sanat haberleri.", avatarUrl: null,
-      news: [{ id: "mock-news-2", title: "Troya Müzesi'ne Ziyaretçi Akını", publishedAt: new Date(Date.now() - 86400000).toISOString() }]
-    }
-  ];
+    orderBy: { createdAt: "asc" },
+  });
 }
 
 async function getCategories() {
-  return [
-    { id: "cat-1", name: "Gündem", slug: "gundem", color: "#EF4444" },
-    { id: "cat-2", name: "Kültür & Sanat", slug: "kultur-sanat", color: "#8B5CF6" },
-    { id: "cat-3", name: "Spor", slug: "spor", color: "#10B981" }
-  ];
+  const districtSlugs = ["biga", "can", "ayvacik", "gelibolu", "ezine"];
+  return prisma.category.findMany({
+    where: { slug: { notIn: districtSlugs } },
+    orderBy: { name: "asc" },
+  });
 }
 
 async function getDistricts() {

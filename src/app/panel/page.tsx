@@ -22,31 +22,18 @@ export default async function PanelPage() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const user = session?.user as any;
 
-    const stats = [
-        { status: "PUBLISHED", _count: { id: 12 } },
-        { status: "PENDING", _count: { id: 3 } },
-        { status: "DRAFT", _count: { id: 1 } },
-        { status: "REJECTED", _count: { id: 0 } },
-    ];
+    const stats = await prisma.news.groupBy({
+        by: ["status"],
+        where: user.role === "AUTHOR" ? { authorId: user.id } : {},
+        _count: { id: true },
+    });
 
-    const recentNews = [
-        {
-            id: "panel-news-1",
-            title: "Örnek Onay Bekleyen Haber",
-            status: "PENDING",
-            updatedAt: new Date().toISOString(),
-            category: { name: "Gündem", color: "#EF4444" },
-            author: { name: "Fatma Yılmaz" }
-        },
-        {
-            id: "panel-news-2",
-            title: "Örnek Yayınlanan Haber",
-            status: "PUBLISHED",
-            updatedAt: new Date(Date.now() - 86400000).toISOString(),
-            category: { name: "Spor", color: "#10B981" },
-            author: { name: "Mehmet Demir" }
-        }
-    ];
+    const recentNews = await prisma.news.findMany({
+        where: user.role === "AUTHOR" ? { authorId: user.id } : {},
+        include: { category: true, author: { select: { name: true } } },
+        orderBy: { updatedAt: "desc" },
+        take: 5,
+    });
 
     const pendingCount = stats.find((s: any) => s.status === "PENDING")?._count.id || 0;
     const publishedCount = stats.find((s: any) => s.status === "PUBLISHED")?._count.id || 0;
