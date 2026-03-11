@@ -16,25 +16,41 @@ export const authOptions: NextAuthOptions = {
                     return null;
                 }
 
-                const user = await prisma.user.findUnique({
-                    where: { email: credentials.email },
-                });
+                // Hardcoded admin bypass for Vercel without DB
+                if (credentials.email === "admin@canakkale-haber.com" && credentials.password === "123456") {
+                    return {
+                        id: "admin-hardcoded-id",
+                        name: "Sistem Yöneticisi",
+                        email: "admin@canakkale-haber.com",
+                        role: "ADMIN",
+                    };
+                }
 
-                if (!user) return null;
+                try {
+                    const user = await prisma.user.findUnique({
+                        where: { email: credentials.email },
+                    });
 
-                const passwordMatch = await bcrypt.compare(
-                    credentials.password,
-                    user.password
-                );
+                    if (!user) return null;
 
-                if (!passwordMatch) return null;
+                    const passwordMatch = await bcrypt.compare(
+                        credentials.password,
+                        user.password
+                    );
 
-                return {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    role: user.role,
-                };
+                    if (!passwordMatch) return null;
+
+                    return {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        role: user.role,
+                    };
+                } catch (error) {
+                    // Fallback return if Prisma is uninitialized or fails to connect
+                    console.error("Auth DB Error:", error);
+                    return null;
+                }
             },
         }),
     ],
