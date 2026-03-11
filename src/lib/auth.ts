@@ -17,13 +17,17 @@ export const authOptions: NextAuthOptions = {
                 }
 
                 // Hardcoded admin bypass for Vercel without DB
-                if (credentials.email === "admin@canakkale-haber.com" && credentials.password === "123456") {
-                    return {
-                        id: "admin-hardcoded-id",
-                        name: "Sistem Yöneticisi",
-                        email: "admin@canakkale-haber.com",
-                        role: "ADMIN",
-                    };
+                const testAccounts = [
+                    { email: "admin@canakkale.com", name: "Sistem Yöneticisi", role: "ADMIN", id: "test-admin-1" },
+                    { email: "fatma@canakkale.com", name: "Fatma Yılmaz", role: "AUTHOR", id: "test-author-1" },
+                    { email: "mehmet@canakkale.com", name: "Mehmet Demir", role: "AUTHOR", id: "test-author-2" },
+                    { email: "elif@canakkale.com", name: "Elif Kaya", role: "AUTHOR", id: "test-author-3" },
+                ];
+
+                const matchingAccount = testAccounts.find(acc => acc.email === credentials.email);
+
+                if (matchingAccount && credentials.password === "password123") {
+                    return matchingAccount;
                 }
 
                 try {
