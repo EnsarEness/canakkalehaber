@@ -19,7 +19,7 @@ async function getPublishedNews() {
       title: "Çanakkale Boğazı'nda Gemi Trafiği",
       excerpt: "Çanakkale Boğazı'nda yoğun sis nedeniyle gemi trafiği geçici olarak durduruldu.",
       slug: "canakkale-bogazinda-gemi-trafigi",
-      coverImage: "https://images.unsplash.com/photo-1570959828461-1ff9702283dc?q=80&w=800",
+      coverImage: "https://upload.wikimedia.org/wikipedia/commons/4/44/1915_%C3%87anakkale_K%C3%B6pr%C3%BCs%C3%BC1.jpg",
       publishedAt: new Date().toISOString(),
       author: { id: "test-author-1", name: "Fatma Yılmaz", avatarUrl: null },
       category: { id: "cat-1", name: "Gündem", color: "#EF4444" }
@@ -29,7 +29,7 @@ async function getPublishedNews() {
       title: "Troya Müzesi'ne Ziyaretçi Akını",
       excerpt: "Avrupa Yılın Müzesi Özel Ödülü alan Troya Müzesi, yerli ve yabancı turistlerin gözdesi oldu.",
       slug: "troya-muzesine-ziyaretci-akini",
-      coverImage: "https://images.unsplash.com/photo-1565022515024-9f2061214e2c?q=80&w=800",
+      coverImage: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Troy_Museum%2C_Tevfikiye%2C_%C3%87anakkale%2C_Turkey.jpg",
       publishedAt: new Date(Date.now() - 86400000).toISOString(),
       author: { id: "test-author-2", name: "Mehmet Demir", avatarUrl: null },
       category: { id: "cat-2", name: "Kültür & Sanat", color: "#8B5CF6" }
