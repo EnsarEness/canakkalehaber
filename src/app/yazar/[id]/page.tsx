@@ -16,35 +16,31 @@ const roleLabels: Record<string, string> = {
 
 export async function generateMetadata({ params }: Props) {
     const { id } = await params;
-    const user = await prisma.user.findUnique({
-        where: { id },
-        select: { name: true },
-    });
-    return { title: user ? `${user.name} - Çanakkale Haber` : "Yazar bulunamadı" };
+    return { title: "Yazar Profili - Çanakkale Haber" };
 }
 
 export default async function AuthorProfilePage({ params }: Props) {
     const { id } = await params;
-    const author = await prisma.user.findUnique({
-        where: { id },
-        select: {
-            id: true,
-            name: true,
-            email: true,
-            role: true,
-            bio: true,
-            avatarUrl: true,
-            createdAt: true,
-            news: {
-                where: { status: "PUBLISHED" },
-                include: {
-                    category: true,
-                    author: { select: { id: true, name: true, avatarUrl: true } },
-                },
-                orderBy: { publishedAt: "desc" },
-            },
-        },
-    });
+    const author: any = {
+        id,
+        name: "Örnek Yazar",
+        email: "yazar@canakkale-haber.com",
+        role: "AUTHOR",
+        bio: "Bu yazar geçici olarak gösterilmektedir.",
+        avatarUrl: null,
+        createdAt: new Date().toISOString(),
+        news: [
+            {
+                id: "author-news-1",
+                title: "Yazarın Örnek Haberi",
+                slug: "yazarin-ornek-haberi",
+                excerpt: "Bu haber yazarın profiline ait bir taslaktır.",
+                publishedAt: new Date().toISOString(),
+                category: { name: "Gündem", color: "#EF4444" },
+                author: { name: "Örnek Yazar" }
+            }
+        ]
+    };
 
     if (!author) notFound();
 

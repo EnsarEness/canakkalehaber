@@ -13,39 +13,49 @@ import { Clock, ArrowRight } from "lucide-react";
 export const revalidate = 60;
 
 async function getPublishedNews() {
-  return prisma.news.findMany({
-    where: { status: "PUBLISHED" },
-    include: {
-      author: { select: { id: true, name: true, avatarUrl: true } },
-      category: true,
+  return [
+    {
+      id: "mock-news-1",
+      title: "Çanakkale Boğazı'nda Gemi Trafiği",
+      excerpt: "Çanakkale Boğazı'nda yoğun sis nedeniyle gemi trafiği geçici olarak durduruldu.",
+      slug: "canakkale-bogazinda-gemi-trafigi",
+      coverImage: "https://images.unsplash.com/photo-1570959828461-1ff9702283dc?q=80&w=800",
+      publishedAt: new Date().toISOString(),
+      author: { id: "test-author-1", name: "Fatma Yılmaz", avatarUrl: null },
+      category: { id: "cat-1", name: "Gündem", color: "#EF4444" }
     },
-    orderBy: { publishedAt: "desc" },
-    take: 22,
-  });
+    {
+      id: "mock-news-2",
+      title: "Troya Müzesi'ne Ziyaretçi Akını",
+      excerpt: "Avrupa Yılın Müzesi Özel Ödülü alan Troya Müzesi, yerli ve yabancı turistlerin gözdesi oldu.",
+      slug: "troya-muzesine-ziyaretci-akini",
+      coverImage: "https://images.unsplash.com/photo-1565022515024-9f2061214e2c?q=80&w=800",
+      publishedAt: new Date(Date.now() - 86400000).toISOString(),
+      author: { id: "test-author-2", name: "Mehmet Demir", avatarUrl: null },
+      category: { id: "cat-2", name: "Kültür & Sanat", color: "#8B5CF6" }
+    }
+  ];
 }
 
 async function getAuthors() {
-  return prisma.user.findMany({
-    where: { news: { some: { status: "PUBLISHED" } } },
-    select: {
-      id: true, name: true, role: true, bio: true, avatarUrl: true,
-      news: {
-        where: { status: "PUBLISHED" },
-        select: { id: true, title: true, publishedAt: true },
-        orderBy: { publishedAt: "desc" },
-        take: 2,
-      },
+  return [
+    {
+      id: "test-author-1", name: "Fatma Yılmaz", role: "AUTHOR", bio: "Çanakkale merkezli yerel muhabir.", avatarUrl: null,
+      news: [{ id: "mock-news-1", title: "Çanakkale Boğazı'nda Gemi Trafiği", publishedAt: new Date().toISOString() }]
     },
-    orderBy: { createdAt: "asc" },
-  });
+    {
+      id: "test-author-2", name: "Mehmet Demir", role: "AUTHOR", bio: "Kültür ve sanat haberleri.", avatarUrl: null,
+      news: [{ id: "mock-news-2", title: "Troya Müzesi'ne Ziyaretçi Akını", publishedAt: new Date(Date.now() - 86400000).toISOString() }]
+    }
+  ];
 }
 
 async function getCategories() {
-  const districtSlugs = ["biga", "can", "ayvacik", "gelibolu", "ezine"];
-  return prisma.category.findMany({
-    where: { slug: { notIn: districtSlugs } },
-    orderBy: { name: "asc" },
-  });
+  return [
+    { id: "cat-1", name: "Gündem", slug: "gundem", color: "#EF4444" },
+    { id: "cat-2", name: "Kültür & Sanat", slug: "kultur-sanat", color: "#8B5CF6" },
+    { id: "cat-3", name: "Spor", slug: "spor", color: "#10B981" }
+  ];
 }
 
 async function getDistricts() {
