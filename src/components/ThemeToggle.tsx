@@ -7,7 +7,7 @@ import { Sun, Moon, Monitor } from "lucide-react";
 export function ThemeToggle({ compact = false }: { compact?: boolean }) {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
-
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => setMounted(true), []);
     if (!mounted) return <div className="w-9 h-9" />;
 
@@ -40,8 +40,8 @@ export function ThemeToggle({ compact = false }: { compact?: boolean }) {
                     title={label}
                     aria-label={label}
                     className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${theme === key
-                            ? "bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-sm"
-                            : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                        ? "bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-sm"
+                        : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                         }`}
                 >
                     {icon}

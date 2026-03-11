@@ -26,6 +26,7 @@ export default function OnayBekleyenlerPage() {
         setLoading(false);
     }
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => { fetchPending(); }, []);
 
     async function approve(id: string) {

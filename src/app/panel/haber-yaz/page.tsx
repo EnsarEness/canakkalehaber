@@ -20,6 +20,7 @@ export default function HaberYazPage() {
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const user = session?.user as any;
     const isEditorOrAdmin = user?.role === "EDITOR" || user?.role === "ADMIN";
 

@@ -32,16 +32,12 @@ export function GestasWidget() {
     const [dir, setDir] = useState<Direction>("from");
     const [expanded, setExpanded] = useState(false);
     const [mounted, setMounted] = useState(false);
-
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => setMounted(true), []);
 
     const times = SCHEDULES[route][dir];
-    const { next, upcoming } = mounted ? getNextDepartures(times) : { next: times[0], upcoming: times.slice(0, 3) };
+    const { next } = mounted ? getNextDepartures(times) : { next: times[0] };
     const visible = expanded ? times : times.slice(0, 8);
-
-    const dirLabel = dir === "from"
-        ? `Çanakkale → ${route === "eceabat" ? "Eceabat" : "Kilitbahir"}`
-        : `${route === "eceabat" ? "Eceabat" : "Kilitbahir"} → Çanakkale`;
 
     return (
         <div className="rounded-2xl overflow-hidden shadow-sm transition-all hover:shadow-md border" style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}>

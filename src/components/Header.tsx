@@ -45,7 +45,7 @@ export function Header() {
         else document.body.style.overflow = "";
         return () => { document.body.style.overflow = ""; };
     }, [mobileOpen]);
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const user = session?.user as any;
 
     return (

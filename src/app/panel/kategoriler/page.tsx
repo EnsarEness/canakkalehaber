@@ -31,6 +31,7 @@ export default function KategorilerPage() {
         setLoading(false);
     }
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => { fetchCategories(); }, []);
 
     async function handleAdd(e: React.FormEvent) {

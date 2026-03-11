@@ -41,7 +41,7 @@ export function Footer() {
                             </div>
                         </Link>
                         <p className="text-sm text-[var(--text-muted)] leading-relaxed max-w-sm">
-                            Çanakkale'nin güncel haberlerini, yerel gelişmelerini ve kültür-sanat etkinliklerini güvenilir kaynaklardan sunuyoruz.
+                            Çanakkale&apos;nin güncel haberlerini, yerel gelişmelerini ve kültür-sanat etkinliklerini güvenilir kaynaklardan sunuyoruz.
                         </p>
 
                         {/* Social links */}

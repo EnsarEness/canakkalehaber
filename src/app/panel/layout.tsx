@@ -8,6 +8,7 @@ export default async function PanelLayout({ children }: { children: ReactNode })
     const session = await getServerSession(authOptions);
     if (!session) redirect("/giris");
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const user = session.user as any;
 
     return (

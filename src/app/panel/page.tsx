@@ -19,6 +19,7 @@ function StatusBadge({ status }: { status: string }) {
 
 export default async function PanelPage() {
     const session = await getServerSession(authOptions);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const user = session?.user as any;
 
     const stats = await prisma.news.groupBy({
@@ -34,10 +35,10 @@ export default async function PanelPage() {
         take: 5,
     });
 
-    const pendingCount = stats.find((s) => s.status === "PENDING")?._count.id || 0;
-    const publishedCount = stats.find((s) => s.status === "PUBLISHED")?._count.id || 0;
-    const draftCount = stats.find((s) => s.status === "DRAFT")?._count.id || 0;
-    const rejectedCount = stats.find((s) => s.status === "REJECTED")?._count.id || 0;
+    const pendingCount = stats.find((s: any) => s.status === "PENDING")?._count.id || 0;
+    const publishedCount = stats.find((s: any) => s.status === "PUBLISHED")?._count.id || 0;
+    const draftCount = stats.find((s: any) => s.status === "DRAFT")?._count.id || 0;
+    const rejectedCount = stats.find((s: any) => s.status === "REJECTED")?._count.id || 0;
 
     const statCards = [
         { label: "Yayında", value: publishedCount, icon: CheckCircle, color: "text-green-600", bg: "bg-green-50" },
@@ -118,7 +119,7 @@ export default async function PanelPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
-                            {recentNews.map((news) => (
+                            {recentNews.map((news: any) => (
                                 <tr key={news.id} className="hover:bg-gray-50 transition-colors">
                                     <td className="px-6 py-4">
                                         <p className="font-medium text-gray-900 line-clamp-1 max-w-xs">{news.title}</p>
