@@ -38,6 +38,13 @@ async function main() {
     const kultur = await prisma.category.create({ data: { name: "Kültür & Sanat", slug: "kultur-sanat", color: "#8B5CF6" } });
     const turizm = await prisma.category.create({ data: { name: "Turizm", slug: "turizm", color: "#06B6D4" } });
 
+    // --- İLÇELER (DISTRICTS) ---
+    const biga = await prisma.category.create({ data: { name: "Biga", slug: "biga", color: "#6366F1" } });
+    const can = await prisma.category.create({ data: { name: "Çan", slug: "can", color: "#EAB308" } });
+    const ayvacik = await prisma.category.create({ data: { name: "Ayvacık", slug: "ayvacik", color: "#14B8A6" } });
+    const gelibolu = await prisma.category.create({ data: { name: "Gelibolu", slug: "gelibolu", color: "#8B5CF6" } });
+    const ezine = await prisma.category.create({ data: { name: "Ezine", slug: "ezine", color: "#F43F5E" } });
+
     // ── SEED NEWS (20 ARTICLES) ──────────────────────────────────────────────────
     const newsData = [
         // --- GÜNDEM ---
@@ -244,7 +251,54 @@ async function main() {
             content: "<p>Özellikle taş ev tarzı otellere yabancı turist akını var...</p>",
             categoryId: turizm.id, authorId: caner.id,
             coverImage: "https://picsum.photos/seed/news20/800/450",
+            status: "PUBLISHED", viewCount: 650,
+        },
+
+        // --- İLÇELER HABERLERİ ---
+        {
+            title: "Biga OSB'de Yeni Fabrikalar Yükseliyor",
+            slug: "biga-osb-dev-yatirimlar",
+            excerpt: "Biga Organize Sanayi Bölgesi'ne yatırım yapan 3 yeni fabrikanın temeli atıldı.",
+            content: `<h2>Biga'ya Dev Yatırım</h2><p>Biga Organize Sanayi Bölgesi genişlemeye devam ediyor. Bölgeye ciddi istihdam sağlayacak 3 dev fabrikanın temeli devlet yetkililerinin katılımıyla atıldı.</p><p>Fabrikalar tamamlandığında bölge ekonomisine yıllık 500 milyon lira katkı sağlaması hedefleniyor.</p>`,
+            categoryId: biga.id, authorId: caner.id,
+            coverImage: "https://picsum.photos/seed/news21/800/450",
+            status: "PUBLISHED", viewCount: 1420,
+        },
+        {
+            title: "Çan Termik Santrali Filtre Sistemleri Yenileniyor",
+            slug: "can-termik-santrali-filtre",
+            excerpt: "İlçe halkının uzun süredir talep ettiği santral baca filtrelerinin modernizasyon projesi resmen başladı.",
+            content: `<h2>Temiz Hava Çan İçin Önemli</h2><p>İlçenin havasını etkileyen termik santralin eski filtreleri tamamen söküldü. Yerine Avrupa standartlarında son teknoloji emisyon filtre sistemleri kuruluyor.</p><p>Yetkililer yaz sonuna kadar montajın biteceğini müjdeledi.</p>`,
+            categoryId: can.id, authorId: mehmet.id,
+            coverImage: "https://picsum.photos/seed/news22/800/450",
             status: "PUBLISHED", viewCount: 890,
+        },
+        {
+            title: "Ayvacık Sahillerinde Erken Turizm Hareketliliği",
+            slug: "ayvacik-sahilleri-turizm",
+            excerpt: "Havaların erken ısınmasıyla birlikte Assos ve Küçükkuyu sahilleri bahar aylarında yerli ve yabancı turist akınına uğradı.",
+            content: `<h2>Baharda Yaz Havası</h2><p>Normal şartlarda Haziran'da başlayan sezon, Ayvacık sahillerinde bu yıl Nisan'da açıldı. Otellerdeki doluluk oranları şimdiden yüzde 70'i aştı.</p><ul><li>Bölge esnafı sezondan umutlu.</li><li>Tarihi alanlarda ziyaretçi rekoru kırıldı.</li></ul>`,
+            categoryId: ayvacik.id, authorId: elif.id,
+            coverImage: "https://picsum.photos/seed/news23/800/450",
+            status: "PUBLISHED", viewCount: 2150,
+        },
+        {
+            title: "Gelibolu Tarihi Yarımada'da Yeni Yürüyüş Rotaları",
+            slug: "gelibolu-tarihi-yarimada-yuruyus",
+            excerpt: "Tarihi Milli Park sınırları içerisindeki cephe hatlarını birbirine bağlayan doğa dostu 4 yeni trekking parkuru açıldı.",
+            content: `<h2>Tarihe Yürüyüş</h2><p>1915 Çanakkale Savaşları Araştırma Merkezi, doğaseverler ve tarih meraklıları için eski cephe patikalarını temizleyerek yürüyüş rotaları oluşturdu.</p><p>Rotalar boyunca karekod destekli bilgilendirme tabelaları da yerleştirildi.</p>`,
+            categoryId: gelibolu.id, authorId: fatma.id,
+            coverImage: "https://picsum.photos/seed/news24/800/450",
+            status: "PUBLISHED", viewCount: 1730,
+        },
+        {
+            title: "Ezine Peyniri İçin Coğrafi İşaret Denetimleri Sıkılaştı",
+            slug: "ezine-peyniri-denetim",
+            excerpt: "Türkiye'nin en ünlü peynir markası olan Ezine peynirinin sahtelerine karşı denetim ekipleri seferber oldu.",
+            content: `<h2>Orijinal Lezzete Koruma</h2><p>Coğrafi sınırları belli sütlerden üretilmesi gereken Ezine Peyniri adını haksız kullanan firmalara karşı hem yerel yönetimler hem de Tarım Müdürlüğü ekipleri şok baskınlar düzenledi.</p>`,
+            categoryId: ezine.id, authorId: caner.id,
+            coverImage: "https://picsum.photos/seed/news25/800/450",
+            status: "PUBLISHED", viewCount: 3010,
         }
     ];
 
