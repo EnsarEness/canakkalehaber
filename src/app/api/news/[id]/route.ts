@@ -6,11 +6,12 @@ import { prisma } from "@/lib/prisma";
 // GET - Tek haber detayı
 export async function GET(
     req: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     try {
         const news = await prisma.news.findUnique({
-            where: { id: params.id },
+            where: { id },
             include: {
                 author: { select: { id: true, name: true, bio: true, avatarUrl: true } },
                 category: true,
@@ -23,7 +24,7 @@ export async function GET(
 
         // View count artır
         await prisma.news.update({
-            where: { id: params.id },
+            where: { id },
             data: { viewCount: { increment: 1 } },
         });
 
@@ -36,8 +37,9 @@ export async function GET(
 // PATCH - Haberi güncelle
 export async function PATCH(
     req: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user) {
@@ -48,7 +50,7 @@ export async function PATCH(
         const body = await req.json();
 
         const existingNews = await prisma.news.findUnique({
-            where: { id: params.id },
+            where: { id },
         });
 
         if (!existingNews) {
@@ -61,7 +63,7 @@ export async function PATCH(
         }
 
         const news = await prisma.news.update({
-            where: { id: params.id },
+            where: { id },
             data: body,
         });
 

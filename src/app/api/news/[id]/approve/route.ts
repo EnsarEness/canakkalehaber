@@ -6,8 +6,9 @@ import { prisma } from "@/lib/prisma";
 // PATCH - Haberi onayla (EDITOR/ADMIN)
 export async function PATCH(
     req: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     try {
         const session = await getServerSession(authOptions);
         const user = session?.user as any;
@@ -17,7 +18,7 @@ export async function PATCH(
         }
 
         const news = await prisma.news.update({
-            where: { id: params.id },
+            where: { id },
             data: {
                 status: "PUBLISHED",
                 publishedAt: new Date(),
