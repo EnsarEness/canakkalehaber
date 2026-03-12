@@ -100,7 +100,7 @@ export function HeroSlider({ news }: HeroSliderProps) {
                             </p>
                         )}
                         <div className="flex items-center gap-2 text-white/60 text-xs md:text-sm font-medium">
-                            <span>{item.author.name}</span>
+                            <span>{item.author?.name || "Misafir Yazar"}</span>
                             <span className="opacity-50">•</span>
                             <span>{timeAgo(item.publishedAt)}</span>
                         </div>

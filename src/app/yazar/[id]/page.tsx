@@ -48,7 +48,8 @@ export default async function AuthorProfilePage({ params }: Props) {
 
     if (!author) notFound();
 
-    const initials = author.name
+    const authorName = author.name || "Misafir Yazar";
+    const initials = authorName
         .split(" ")
         .map((w: string) => w[0])
         .join("")

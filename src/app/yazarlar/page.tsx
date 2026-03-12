@@ -40,7 +40,8 @@ export default async function YazarlarPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {authors.map((author) => {
-                    const initials = author.name
+                    const authorName = author.name || "Misafir Yazar";
+                    const initials = authorName
                         .split(" ")
                         .map((w: string) => w[0])
                         .join("")
@@ -58,13 +59,13 @@ export default async function YazarlarPage() {
                                             className="w-16 h-16 rounded-full object-cover ring-2 ring-gray-100"
                                         />
                                     ) : (
-                                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#1a2744] to-red-700 flex items-center justify-center text-white text-xl font-bold">
+                                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#1a2744] to-red-700 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
                                             {initials}
                                         </div>
                                     )}
                                     <div>
                                         <h3 className="font-bold text-gray-900 group-hover:text-red-700 transition-colors">
-                                            {author.name}
+                                            {authorName}
                                         </h3>
                                         <span className="text-xs text-gray-500 flex items-center gap-1">
                                             <BookOpen size={11} /> {author.news.length} makale

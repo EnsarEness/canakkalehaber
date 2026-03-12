@@ -67,9 +67,9 @@ export function NewsCard({
                         <div className="flex items-center justify-between text-xs text-[var(--text-faint)]">
                             <div className="flex items-center gap-1.5">
                                 <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[var(--navy)] to-[var(--accent)] flex items-center justify-center text-white text-[9px] font-bold">
-                                    {author.name.charAt(0)}
+                                    {author?.name?.charAt(0) || "Y"}
                                 </div>
-                                <span className="font-medium text-[var(--text-muted)]">{author.name}</span>
+                                <span className="font-medium text-[var(--text-muted)]">{author?.name || "Misafir Yazar"}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <span className="flex items-center gap-1"><Clock size={10} />{timeAgo(publishedAt)}</span>
@@ -124,9 +124,9 @@ export function NewsCard({
                     <div className="flex items-center justify-between text-[10px] text-[var(--text-faint)] pt-3 border-t border-[var(--border)] mt-auto">
                         <div className="flex items-center gap-1.5 min-w-0">
                             <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[var(--navy)] to-[var(--accent)] flex items-center justify-center text-white text-[8px] font-bold flex-shrink-0">
-                                {author.name.charAt(0)}
+                                {author?.name?.charAt(0) || "Y"}
                             </div>
-                            <span className="truncate font-medium text-[var(--text-muted)]">{author.name}</span>
+                            <span className="truncate font-medium text-[var(--text-muted)]">{author?.name || "Misafir Yazar"}</span>
                         </div>
                         <div className="flex items-center gap-2 flex-shrink-0">
                             <span className="flex items-center gap-0.5"><Clock size={9} />{timeAgo(publishedAt)}</span>

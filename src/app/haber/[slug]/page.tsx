@@ -85,9 +85,9 @@ export default async function NewsDetailPage({ params }: Props) {
                     <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6 pb-6 border-b border-gray-100">
                         <div className="flex items-center gap-2">
                             <div className="w-8 h-8 bg-gradient-to-br from-[#1a2744] to-red-700 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                                {news.author.name.charAt(0)}
+                                {news.author?.name?.charAt(0) || "Y"}
                             </div>
-                            <span className="font-medium text-gray-700">{news.author.name}</span>
+                            <span className="font-medium text-gray-700">{news.author?.name || "Misafir Yazar"}</span>
                         </div>
                         {news.publishedAt && (
                             <span className="flex items-center gap-1">
@@ -128,11 +128,11 @@ export default async function NewsDetailPage({ params }: Props) {
                     {/* Author card */}
                     <div className="mt-8 bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-start gap-4">
                         <div className="w-14 h-14 bg-gradient-to-br from-[#1a2744] to-red-700 rounded-full flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
-                            {news.author.name.charAt(0)}
+                            {news.author?.name?.charAt(0) || "Y"}
                         </div>
                         <div>
-                            <p className="font-bold text-gray-900">{news.author.name}</p>
-                            <p className="text-xs text-red-700 font-medium capitalize mb-2">{news.author.role}</p>
+                            <p className="font-bold text-gray-900">{news.author?.name || "Misafir Yazar"}</p>
+                            <p className="text-xs text-red-700 font-medium capitalize mb-2">{news.author?.role || "Yazar"}</p>
                             {news.author.bio && (
                                 <p className="text-sm text-gray-500">{news.author.bio}</p>
                             )}

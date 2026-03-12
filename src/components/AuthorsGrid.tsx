@@ -33,7 +33,8 @@ const roleLabels: Record<string, string> = {
 };
 
 function AuthorCard({ author }: { author: Author }) {
-    const initials = author.name
+    const authorName = author.name || "Misafir Yazar";
+    const initials = authorName
         .split(" ")
         .map((w) => w[0])
         .join("")
@@ -56,7 +57,7 @@ function AuthorCard({ author }: { author: Author }) {
                         {author.avatarUrl ? (
                             <img
                                 src={author.avatarUrl}
-                                alt={author.name}
+                                alt={authorName}
                                 className="w-14 h-14 rounded-full object-cover"
                             />
                         ) : (
